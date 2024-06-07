@@ -13,7 +13,7 @@ collection = start_db()
 
 @app.get("/")
 def default():
-    return {"message": "Hello there, I am automation service that provides menu for you favourite restaurant"}
+    return {"message": "Hello there, I am automation service that provides menu for your favourite restaurant"}
 
 
 @app.get("/menu")
