@@ -3,6 +3,8 @@ from models import Restaurant
 from automation.webscraping import webscraping
 from config.database import start_db
 from schema import individual_serial
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 from utils import find_price
 app = FastAPI()
 
@@ -37,3 +39,9 @@ async def get_menu(restaurant: Restaurant):
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         return {'data': data}
+
+@app.exception_handler(404)
+async def not_found(request: Request, exc: HTTPException):
+    return JSONResponse({"detail": "Not Found"}, status_code=404)
+
+
