@@ -1,13 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from models import Restaurant
-from webscraping import webscraping
-from image_to_text import image_to_text
-from database import start_db
+from automation.webscraping import webscraping
+from config.database import start_db
 from schema import individual_serial
-from utils import parse_menu_lines
+from utils import find_price
 app = FastAPI()
 
 collection = start_db()
+
 
 @app.get("/")
 def default():
@@ -15,22 +15,25 @@ def default():
 
 
 @app.get("/menu")
-async def get_menu(restaurant:Restaurant):
+async def get_menu(restaurant: Restaurant):
     try:
-        data = await collection.find_one({'name':restaurant.name.lower()})
+        data = await collection.find_one({'name': restaurant.name.lower()})
         if data is None:
-            webscraping(restaurant.name)
-            lines = image_to_text()
-            items_and_prices = parse_menu_lines(lines)
-            data = {
+            text = await webscraping(restaurant.name)
+            items_and_prices = find_price(text)
+
+            data_to_save = {
                 "name": restaurant.name.lower(),
                 "menu_list": items_and_prices
             }
-            await collection.insert_one(data)
+
+            await collection.insert_one(data_to_save)
+            data = data_to_save
         else:
             data = individual_serial(data)
+        if ('_id' in data):
+            data['_id'] = str(data['_id'])
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
-    return {'data':data}
-
+    finally:
+        return {'data': data}

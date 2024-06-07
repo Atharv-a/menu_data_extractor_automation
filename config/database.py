@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 def start_db():
     uri = os.environ.get('DATABASE_URL')
 
@@ -15,8 +16,8 @@ def start_db():
         print("Pinged your deployment. You successfully connected to MongoDB!")
         db = client.menu_db
         collection = db['menus']
-        collection.create_index("name",unique = True)
-        
+        collection.create_index("name", unique=True)
+
     except Exception as e:
         print(e)
 

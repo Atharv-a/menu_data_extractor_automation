@@ -1,6 +1,5 @@
 import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -9,6 +8,7 @@ def get_images_from_zomato(driver, restaurant):
     image_urls =[]
 
     it = 0
+    print(f'dropdown item: {it} selected')
     while it<len(items):
         try:
             items[it].click()
@@ -25,24 +25,27 @@ def get_images_from_zomato(driver, restaurant):
         except:
             print("execption has occured in extracting images from zomato")
         it+=1 
+        print(f'dropdown item: {it} selected')
     return image_urls
 
 def get_dropdown_list_items(driver, restaurant):
-    input_box = driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/header/nav/ul[2]/li[1]/div/div/div[3]/input')
-    input_box.send_keys(restaurant)
-    input_box.click()
-    time.sleep(2)
+    try:
+        input_box = driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/header/nav/ul[2]/li[1]/div/div/div[3]/input')
+        input_box.send_keys(restaurant)
+        input_box.click()
+        time.sleep(2)
 
-    wait = WebDriverWait(driver, 10)
-    wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR,'.sc-eqPNPO' ))
+        wait = WebDriverWait(driver, 10)
+        wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR,'.sc-eqPNPO' ))
 
-    )
-    print("drop down loaded")
-    items = driver.find_elements(By.CLASS_NAME,'sc-jotlie,jTjLpA')
-    return items
+        )
 
-
+        items = driver.find_elements(By.CLASS_NAME,'sc-jotlie,jTjLpA')
+        return items
+    except:
+        return []
+    
 def get_image_url(driver):
     try:
         menu_images = driver.find_element(By.CLASS_NAME,'sc-hBcjXN,cItQfd')
