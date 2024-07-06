@@ -2,28 +2,26 @@
 
 ## Overview
 
-This project provides an automation service that retrieves the menu for your favorite restaurants using web scraping (with Selenium) and OCR techniques (with Tesseract). The service is built using FastAPI for the API layer, and the data is stored in a MongoDB database.
+This project provides an automation service that retrieves restaurant menus from Zomato and Google Images using Selenium for web scraping and OCR.space API for optical character recognition. It leverages Gemini for processing the extracted data to create structured menus.
 
 ## Features
 
-- **FastAPI**: Provides a RESTful API to interact with the service.
-- **MongoDB**: Stores the restaurant menus for quick retrieval.
-- **Web Scraping with Selenium**: Utilizes Selenium for browser automation to scrape menus from restaurant websites.
-- **OCR with Tesseract**: Employs Tesseract for optical character recognition to extract text from images of menus.
-- **Pydantic**: Ensures data validation and serialization.
+- **Selenium**: Automates web browsers to scrape restaurant menus from Zomato and Google Images.
+- **OCR.space API**: Performs optical character recognition on menu images to extract content.
+- **Gemini**: Processes extracted data to create structured and accurate menus.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Python 3.8+
-- MongoDB
-- Tesseract-OCR
 - Selenium WebDriver
+- OCR.space API key
+- Gemini API key
 
 ### Installation
 
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/Atharv-a/menu_data_extractor_automation.git
-   cd restaurant-menu-automation
+   cd menu_data_extractor_automation
