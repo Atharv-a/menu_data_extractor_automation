@@ -1,4 +1,3 @@
-import time
 from selenium.webdriver.common.by import By
 
 
@@ -6,7 +5,7 @@ def get_images_from_google(driver, delay, max_images):
     def scroll_down(driver):
         driver.execute_script(
             "window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(delay)
+        driver.implicitly_wait(delay)
 
     image_urls = set()
 
@@ -19,8 +18,9 @@ def get_images_from_google(driver, delay, max_images):
             processed_thumbnails += 1
             try:
                 img.click()
-                time.sleep(delay)
-            except:
+                driver.implicitly_wait(delay)
+            except Exception as e:
+                print("Exception:",e)
                 continue
 
             images = driver.find_elements(
